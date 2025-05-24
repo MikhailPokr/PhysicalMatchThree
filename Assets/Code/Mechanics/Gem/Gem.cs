@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace PMT
 {
-    internal class Gem : MonoBehaviour
+    internal class Gem : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private SpriteRenderer _view;
         public SpriteRenderer View => _view;
@@ -42,6 +40,12 @@ namespace PMT
             }
         }
 
-        public void OnMouseDown() => EventBus<GemClickEvent>.Publish(new GemClickEvent(this));
+
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            EventBus<GemClickEvent>.Publish(new GemClickEvent(this));
+        }
+
     }
 }
