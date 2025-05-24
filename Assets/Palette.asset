@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4844f57fdb30b42bf2e73ccdf84c03, type: 3}
+  m_Name: Palette
+  m_EditorClassIdentifier: 
+  GemPrefabs:
+  - Shape: 0
+    Gem: {fileID: 6120691194758628361, guid: 0d50061bd6782eb47b9e31ad4beb6a7e, type: 3}
+  - Shape: 1
+    Gem: {fileID: 6120691194758628361, guid: c12c2bc4128d75144afd74ecc7a025a3, type: 3}
+  - Shape: 2
+    Gem: {fileID: 6120691194758628361, guid: dd7c2049e73524b41b5c06fc0516158d, type: 3}
+  - Shape: 3
+    Gem: {fileID: 6120691194758628361, guid: 09c9f9d0375060c4ab515d84e1ce9830, type: 3}
+  - Shape: 4
+    Gem: {fileID: 6120691194758628361, guid: 19df33c4c33e1cc45992c4bab7783512, type: 3}
+  - Shape: 5
+    Gem: {fileID: 6120691194758628361, guid: 1275b612216bb994883841425ae60a60, type: 3}
+  GameOverAlertPrefab: {fileID: 92956674933763174, guid: e4cd5b5a0b1af9f4cbb3e315bf361ce9, type: 3}

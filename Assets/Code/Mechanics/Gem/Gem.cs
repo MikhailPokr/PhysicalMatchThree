@@ -14,20 +14,20 @@ namespace PMT
         private GemType _gemType; 
         public GemType GemType => _gemType;
 
-        public event Action<Gem> Click;
-
 
         public void initialize(GemChainSystem gemChainController, GemType type)
         {
             _gemChainController = gemChainController;
             _gemType = type;
-            _view.color = type.GetColor();
+            _view.color = type.Color;
         }
+
+        public Sprite GetSprite() => _view.sprite;
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
             Gem other = collision.gameObject.GetComponent<Gem>();
-            if (other != null && other._gemType.IsSameType(_gemType))
+            if (other != null && other._gemType == _gemType)
             {
                 _gemChainController.Match(this, other);
             }
@@ -36,7 +36,7 @@ namespace PMT
         private void OnCollisionExit2D(Collision2D collision)
         {
             Gem other = collision.gameObject.GetComponent<Gem>();
-            if (other != null && other._gemType.IsSameType(_gemType))
+            if (other != null && other._gemType == _gemType)
             {
                 _gemChainController.Dismatch(this, other);
             }

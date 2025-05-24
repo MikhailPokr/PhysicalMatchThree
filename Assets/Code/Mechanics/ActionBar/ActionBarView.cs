@@ -10,11 +10,12 @@ namespace PMT
         [SerializeField] private Image[] _slotImages;
 
         private ActionBarController _actionBarController;
-
+        private Palette _palette;
 
         public void Initialize()
         {
             _actionBarController = ServiceLocator.Resolve<ActionBarController>();
+            _palette = ServiceLocator.Resolve<Palette>();
 
             _actionBarController.ActionBarChanged += OnActionBarChanged;
         }
@@ -23,13 +24,15 @@ namespace PMT
         {
             for (int i = 0; i < slots.Length; i++)
             {
-                if (slots[i] != null)
+                if (!slots[i].IsNull)
                 {
-                    _slotImages[i].color = slots[i].GetColor();
+                    _slotImages[i].sprite = _palette.GemPrefabs.Find(x => x.Shape == slots[i].Shape).Gem.GetSprite();
+                    _slotImages[i].color = slots[i].Color;
                 }
                 else
                 {
-                    _slotImages[i].color = Color.white;
+                    Color color = new(0, 0, 0, 0);
+                    _slotImages[i].color = color;
                 }
                 
             }

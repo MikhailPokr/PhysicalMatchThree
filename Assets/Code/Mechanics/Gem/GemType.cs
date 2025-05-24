@@ -1,32 +1,52 @@
 ﻿using UnityEngine;
+using System; 
 
 namespace PMT
 {
-    internal class GemType
+    internal struct GemType : IEquatable<GemType>
     {
-        private int _type;
+        public bool IsNull;
+        private Shape _shape;
+        public Shape Shape => _shape;
+        private Color _color;
+        public Color Color => _color;
 
-        public GemType(int type)
+        public static GemType Default => new GemType() { IsNull = true };
+        public GemType(Shape shape, Color color)
         {
-            _type = type;
+            IsNull = false;
+            _shape = shape;
+            _color = color;
         }
 
-        public bool IsSameType(GemType other) => _type == other._type;
-
-        public Color GetColor()
+        public bool Equals(GemType other)
         {
-            switch (_type)
-            { 
-                case 0:
-                    return Color.red;
-                case 1:
-                    return Color.green;
-                case 2:
-                    return Color.blue;
-                case 3:
-                    return Color.yellow;
-            }
-            return Color.white;
+            return
+                IsNull == other.IsNull &&
+                _shape == other._shape &&
+                _color == other._color;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is GemType other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_shape, IsNull);
+        }
+
+        #region operators
+        public static bool operator ==(GemType left, GemType right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GemType left, GemType right)
+        {
+            return !(left == right);
         }
     }
+    #endregion
 }

@@ -149,12 +149,24 @@ TextureImporter:
         width: 705
         height: 616
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
-      physicsShape: []
-      tessellationDetail: -1
+      physicsShape:
+      - - {x: 125.5, y: -158}
+        - {x: 295.5, y: -51}
+        - {x: 349.5, y: 86}
+        - {x: 315.5, y: 221}
+        - {x: 137.5, y: 294}
+        - {x: 1.5, y: 165}
+        - {x: -93.5, y: 290}
+        - {x: -238.5, y: 282}
+        - {x: -322.5, y: 202}
+        - {x: -327.5, y: -7}
+        - {x: -139.5, y: -159}
+        - {x: 2.5, y: -301}
+      tessellationDetail: 0
       bones: []
       spriteID: b9f690afe45d50770800000000000000
       internalID: 8576495600576065435
@@ -171,12 +183,22 @@ TextureImporter:
         width: 702
         height: 669
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
-      physicsShape: []
-      tessellationDetail: -1
+      physicsShape:
+      - - {x: 183, y: -97.5}
+        - {x: 343, y: 74.5}
+        - {x: 118, y: 126.5}
+        - {x: -5.0624676, y: 334.5}
+        - {x: -119, y: 123.5}
+        - {x: -350.98434, y: 82.785126}
+        - {x: -185, y: -97.5}
+        - {x: -221.00778, y: -334.5}
+        - {x: -5, y: -225.5}
+        - {x: 218, y: -323.5}
+      tessellationDetail: 0
       bones: []
       spriteID: dbf7408df615e7a70800000000000000
       internalID: 8826581860500144061
@@ -193,12 +215,15 @@ TextureImporter:
         width: 738
         height: 639
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
-      physicsShape: []
-      tessellationDetail: -1
+      physicsShape:
+      - - {x: 4, y: 313.5}
+        - {x: -362.96875, y: -319.5}
+        - {x: 366, y: -314.5}
+      tessellationDetail: 0
       bones: []
       spriteID: 677a0177e25f1d110800000000000000
       internalID: 1284076948692182902
@@ -215,12 +240,12 @@ TextureImporter:
         width: 610
         height: 609
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
       spriteID: fb163e3f98d0fc560800000000000000
       internalID: 7336097204163273151
@@ -237,12 +262,12 @@ TextureImporter:
         width: 624
         height: 624
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
       spriteID: cfc47e7cee6265030800000000000000
       internalID: 3483014168815553788
@@ -259,12 +284,16 @@ TextureImporter:
         width: 556
         height: 696
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
-      physicsShape: []
-      tessellationDetail: -1
+      physicsShape:
+      - - {x: 273, y: -6}
+        - {x: 1, y: 341}
+        - {x: -269, y: -7}
+        - {x: -2, y: -344}
+      tessellationDetail: 0
       bones: []
       spriteID: 0651783df91397fb0800000000000000
       internalID: -4649630577764919968
@@ -276,7 +305,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a79eabe6da8183240add8473d41c69f0
     internalID: 0
     vertices: []
     indices: 
@@ -285,7 +314,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Graybox_0: 8576495600576065435
+      Graybox_1: 8826581860500144061
+      Graybox_2: 1284076948692182902
+      Graybox_3: 7336097204163273151
+      Graybox_4: 3483014168815553788
+      Graybox_5: -4649630577764919968
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -20,34 +20,38 @@ namespace PMT
             if (slots.Length == 0) return slots;
 
             GemType[] result = (GemType[])slots.Clone();
+            bool[] toRemove = new bool[result.Length];
 
-            int start = 0;
-            while (start < result.Length)
+            var groups = result
+                .Where(g => !g.IsNull)
+                .GroupBy(g => g)
+                .Where(g => g.Count() >= _count);
+
+            foreach (var group in groups)
             {
-                if (result[start] == null)
+                GemType typeToRemove = group.Key;
+                for (int i = 0; i < result.Length; i++)
                 {
-                    start++;
-                    continue;
-                }
-
-                int end = start;
-                while (end < result.Length &&
-                       result[end] != null &&
-                       result[end].IsSameType(result[start]))
-                {
-                    end++;
-                }
-
-                int count = end - start;
-                if (count >= _count)
-                {
-                    for (int i = start; i < end; i++)
+                    if (!result[i].IsNull && result[i] == typeToRemove)
                     {
-                        result[i] = null;
+                        toRemove[i] = true;
                     }
                 }
+            }
 
-                start = end;
+            int writeIndex = 0;
+            for (int readIndex = 0; readIndex < result.Length; readIndex++)
+            {
+                if (!toRemove[readIndex])
+                {
+                    result[writeIndex] = result[readIndex];
+                    writeIndex++;
+                }
+            }
+
+            for (int i = writeIndex; i < result.Length; i++)
+            {
+                result[i] = GemType.Default;
             }
 
             return result;
