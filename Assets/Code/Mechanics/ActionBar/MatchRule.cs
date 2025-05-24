@@ -17,44 +17,42 @@ namespace PMT
 
         public GemType[] Process(GemType[] slots)
         {
-            if (slots.Length == 0) return slots;
+            if (slots.Length == 0 || _count <= 1)
+                return slots;
 
-            GemType[] result = (GemType[])slots.Clone();
-            bool[] toRemove = new bool[result.Length];
-
-            var groups = result
-                .Where(g => !g.IsNull)
-                .GroupBy(g => g)
-                .Where(g => g.Count() >= _count);
-
-            foreach (var group in groups)
+            for (int i = 0; i < slots.Length; i++)
             {
-                GemType typeToRemove = group.Key;
-                for (int i = 0; i < result.Length; i++)
+                if (slots[i] == null)
+                    continue;
+
+                GemType currentType = slots[i];
+                int foundCount = 1; 
+
+                for (int j = i + 1; j < slots.Length; j++)
                 {
-                    if (!result[i].IsNull && result[i] == typeToRemove)
+                    if (slots[j] != null && slots[j].ItsSameType(currentType))
+                        foundCount++;
+                }
+
+                if (foundCount >= _count)
+                {
+                    GemType[] newSlots = new GemType[slots.Length];
+                    int newIndex = 0;
+
+                    foreach (GemType gem in slots)
                     {
-                        toRemove[i] = true;
+                        if (gem == null || !gem.ItsSameType(currentType))
+                        {
+                            newSlots[newIndex] = gem;
+                            newIndex++;
+                        }
                     }
+
+                    return newSlots;
                 }
             }
 
-            int writeIndex = 0;
-            for (int readIndex = 0; readIndex < result.Length; readIndex++)
-            {
-                if (!toRemove[readIndex])
-                {
-                    result[writeIndex] = result[readIndex];
-                    writeIndex++;
-                }
-            }
-
-            for (int i = writeIndex; i < result.Length; i++)
-            {
-                result[i] = GemType.Default;
-            }
-
-            return result;
+            return slots;
         }
     }
 }

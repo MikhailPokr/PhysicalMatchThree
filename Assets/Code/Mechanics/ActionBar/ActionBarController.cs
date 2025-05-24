@@ -18,20 +18,28 @@ internal class ActionBarController : IService
     {
         EventBus<GemClickEvent>.Subscribe(OnClick);
 
-        _slots = Enumerable.Repeat(GemType.Default, slotsCount).ToArray();
+        _slots = Enumerable.Repeat<GemType>(null, slotsCount).ToArray();
         _rule = rule;
+    }
+
+    public void ChangeActionBar(GemType[] slots)
+    {
+        _slots = slots;
+        ActionBarChanged?.Invoke(_slots);
     }
 
     private void OnClick(GemClickEvent gemClickEvent)
     {
-        if (_slots.All(x => !x.IsNull))
+        if (_slots.All(x => x != null))
             return;
-        int slotId = Array.IndexOf(_slots, _slots.First(x => x.IsNull));
+        int slotId = Array.IndexOf(_slots, _slots.First(x => x == null));
         _slots[slotId] = gemClickEvent.Gem.GemType;
+        _slots[slotId].Effect?.ApplyInBar(this, _slots);
+
         _slots = _rule.Process(_slots);
 
         ActionBarChanged?.Invoke(_slots);
-        if (_slots.All(x => !x.IsNull))
+        if (_slots.All(x => x != null))
             ActionBarFull?.Invoke();
     }
 }

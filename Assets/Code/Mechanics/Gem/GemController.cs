@@ -1,8 +1,7 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using System.Linq;
+using UnityEngine;
 
 namespace PMT
 {
@@ -17,7 +16,6 @@ namespace PMT
         {
             EventBus<GemClickEvent>.Subscribe(OnClick);
         }
-
 
         public void Generate() => Generate(_count);
         public void Generate(int count)
@@ -47,7 +45,7 @@ namespace PMT
                 for (int j = 0; j < 3; j++)
                 {
                     if (list.Count >= count) break;
-                    list.Add(new GemType(shapes[shapeIndex], colors[colorIndex]));
+                    list.Add(new GemType(shapes[shapeIndex], colors[colorIndex], GetEffect()));
                 }
             }
 
@@ -58,11 +56,25 @@ namespace PMT
 
                 for (int j = 0; j < remaining; j++)
                 {
-                    list.Add(new GemType(shapes[shapeIndex], colors[colorIndex]));
+                    list.Add(new GemType(shapes[shapeIndex], colors[colorIndex], GetEffect()));
                 }
             }
 
             return list.ToArray();
+        }
+
+        private BaseGemSpecialEffect GetEffect()
+        {
+            float value = UnityEngine.Random.value;
+            if (value < 0.01)
+                return new HeavyGemEffect();
+            if (value < 0.02)
+                return new StickyGemEffect();
+            if (value < 0.03)
+                return new FrozenGemEffect();
+            if (value < 0.04)
+                return new BombGemEffect();
+            return null;
         }
 
         private void OnClick(GemClickEvent clickEvent)
@@ -74,11 +86,6 @@ namespace PMT
             {
                 FieldClear?.Invoke();
             }
-        }
-
-        public void OnGemClick(Gem gem)
-        {
-            
         }
     }
 }

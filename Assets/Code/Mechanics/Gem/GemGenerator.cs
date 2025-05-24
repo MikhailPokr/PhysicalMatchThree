@@ -10,11 +10,13 @@ namespace PMT
         [SerializeField] private GameObject _board;
         [SerializeField] private BoxCollider2D _collider;
         [SerializeField] private float _time;
+        [SerializeField] private int _slotsCount = 5; 
 
         private GemController _gemController;
         private GemChainSystem _chainSystem;
         private Palette _palette;
-
+        private List<float> _slotPositions;
+        private float _generationY;
 
         public void Initialize()
         {
@@ -22,7 +24,23 @@ namespace PMT
             _chainSystem = ServiceLocator.Resolve<GemChainSystem>();
             _palette = ServiceLocator.Resolve<Palette>();
 
+            CalculateSlotPositions();
             _gemController.NeedGenerate += OnNeedGenerate;
+        }
+
+        private void CalculateSlotPositions()
+        {
+            _slotPositions = new List<float>();
+            Bounds bounds = _collider.bounds;
+
+            _generationY = bounds.center.y;
+
+            float slotWidth = bounds.size.x / _slotsCount;
+            for (int i = 0; i < _slotsCount; i++)
+            {
+                float xPos = bounds.min.x + (slotWidth * i) + (slotWidth / 2f);
+                _slotPositions.Add(xPos);
+            }
         }
 
         private void GenerateGem(Vector3 pos, GemType type)
@@ -43,27 +61,50 @@ namespace PMT
         IEnumerator Generate(GemType[] gems)
         {
             List<GemType> gemList = gems.ToList();
+            List<int> availableSlots = Enumerable.Range(0, _slotPositions.Count).ToList();
 
             for (int i = 0; i < gems.Length; i++)
             {
-                Vector2 randomPoint = GetRandomPointInCollider();
+                if (availableSlots.Count == 0)
+                {
+                    availableSlots = Enumerable.Range(0, _slotPositions.Count).ToList();
+                }
+
+                // ¬ыбираем случайный слот из доступных
+                int randomSlotIndex = Random.Range(0, availableSlots.Count);
+                int slotIndex = availableSlots[randomSlotIndex];
+                availableSlots.RemoveAt(randomSlotIndex);
+
+                // ѕолучаем позицию слота
+                float xPos = _slotPositions[slotIndex];
+                Vector2 spawnPosition = new Vector2(xPos, _generationY);
+
+                // ¬ыбираем случайный гем из доступных
                 GemType gem = gemList[Random.Range(0, gemList.Count)];
 
-                GenerateGem(randomPoint, gem);
+                GenerateGem(spawnPosition, gem);
 
                 gemList.Remove(gem);
 
                 yield return new WaitForSeconds(_time / 1000f);
             }
         }
-        Vector2 GetRandomPointInCollider()
+
+        // ћетод дл€ отображени€ позиций слотов в гизмосах
+        private void OnDrawGizmos()
         {
-            Bounds bounds = _collider.bounds;
+            if (_collider == null) return;
 
-            float randomX = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
-            float randomY = UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
+            CalculateSlotPositions();
 
-            return new Vector2(randomX, randomY);
+            Gizmos.color = Color.green;
+            foreach (float xPos in _slotPositions)
+            {
+                Vector3 position = new Vector3(xPos, _generationY, 0);
+                Gizmos.DrawSphere(position, 0.2f);
+                Gizmos.DrawLine(position - Vector3.up * 0.3f, position + Vector3.up * 0.3f);
+                Gizmos.DrawLine(position - Vector3.right * 0.3f, position + Vector3.right * 0.3f);
+            }
         }
     }
 }
