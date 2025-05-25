@@ -10,12 +10,12 @@ namespace PMT
         [SerializeField] private Image[] _slotImages;
         [SerializeField] private Image[] _slotsBG;
 
-        private ActionBarController _actionBarController;
+        private IActionBarController _actionBarController;
         private Palette _palette;
 
         public void Initialize()
         {
-            _actionBarController = ServiceLocator.Resolve<ActionBarController>();
+            _actionBarController = ServiceLocator.Resolve<IActionBarController>();
             _palette = ServiceLocator.Resolve<Palette>();
 
             _actionBarController.ActionBarChanged += OnActionBarChanged;
@@ -43,6 +43,11 @@ namespace PMT
                 
             }
                 
+        }
+
+        private void OnDestroy()
+        {
+            _actionBarController.ActionBarChanged -= OnActionBarChanged;
         }
     }
 }

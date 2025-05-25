@@ -14,18 +14,23 @@ namespace PMT
         private int _unfrozenValue = 3;
         private int _lastValue;
 
-        private ActionBarController _actionBarController;
+        private IActionBarController _actionBarController;
         private Gem _gem;
 
-        public override void ApplyInBar(ActionBarController actionBarController, GemType[] slots) { }
+        public override void ApplyInBar(GemType[] slots) { }
 
         public override void ApplyInField(Gem gem)
         {
             _gem = gem;
             _gem.SwitchLock();
-            _actionBarController = ServiceLocator.Resolve<ActionBarController>();
+            _actionBarController = ServiceLocator.Resolve<IActionBarController>();
 
             _actionBarController.ActionBarChanged += OnActionBarChanged;
+        }
+
+        public override void OnDestroy()
+        {
+            _actionBarController.ActionBarChanged -= OnActionBarChanged;
         }
 
         private void OnActionBarChanged(GemType[] slots)

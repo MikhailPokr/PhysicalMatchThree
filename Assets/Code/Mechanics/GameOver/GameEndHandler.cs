@@ -7,16 +7,24 @@ using UnityEngine;
 
 namespace PMT
 {
-    internal class GameEndHandler : IService
+    internal class GameEndHandler : IGameEndHandler
     {
+        private IGemController _gemController;
+        private IActionBarController _actionBarController;
+
         private GameOverAlert _alertPrefab;
-        private ActionBarController _actionBarController;
-        private GemController _gemController;
-        public GameEndHandler(GemController gemController, ActionBarController actionBarController, GameOverAlert alertPrefab) 
+        private Canvas _canvas;
+
+        public GameEndHandler(
+            IGemController gemController,
+            IActionBarController actionBarController,
+            GameOverAlert alertPrefab,
+            Canvas canvas) 
         {
             _gemController = gemController;
             _alertPrefab = alertPrefab;
             _actionBarController = actionBarController;
+            _canvas = canvas;
 
             _gemController.FieldClear += FieldClear;
             _actionBarController.ActionBarFull += OnActionBarFull;
@@ -24,16 +32,22 @@ namespace PMT
 
         private void OnActionBarFull()
         {
-            Canvas canvas = GameObject.FindAnyObjectByType<Canvas>();
-            GameOverAlert alert = GameObject.Instantiate(_alertPrefab, canvas.transform);
+            GameOverAlert alert = GameObject.Instantiate(_alertPrefab, _canvas.transform);
             alert.Initialize("Поражение");
+            EventBus<GameOverEvent>.Publish(new GameOverEvent());
         }
 
         private void FieldClear()
         {
-            Canvas canvas = GameObject.FindAnyObjectByType<Canvas>();
-            GameOverAlert alert = GameObject.Instantiate(_alertPrefab, canvas.transform);
+            GameOverAlert alert = GameObject.Instantiate(_alertPrefab, _canvas.transform);
             alert.Initialize("Победа");
+            EventBus<GameOverEvent>.Publish(new GameOverEvent());
+        }
+
+        public void Dispose()
+        {
+            _gemController.FieldClear -= FieldClear;
+            _actionBarController.ActionBarFull -= OnActionBarFull;
         }
     }
 }

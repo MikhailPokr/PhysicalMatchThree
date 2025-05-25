@@ -1,12 +1,8 @@
 ﻿using PMT;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.Collections;
 
-internal class ActionBarController : IService
+internal class ActionBarController : IActionBarController
 {
     private GemType[] _slots;
     private IActionBarRule _rule;
@@ -34,7 +30,7 @@ internal class ActionBarController : IService
             return;
         int slotId = Array.IndexOf(_slots, _slots.First(x => x == null));
         _slots[slotId] = gemClickEvent.Gem.GemType;
-        _slots[slotId].Effect?.ApplyInBar(this, _slots);
+        _slots[slotId].Effect?.ApplyInBar(_slots);
 
         _slots = _rule.Process(_slots);
 
@@ -42,4 +38,6 @@ internal class ActionBarController : IService
         if (_slots.All(x => x != null))
             ActionBarFull?.Invoke();
     }
+
+    public void Dispose() { }
 }

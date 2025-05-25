@@ -21,5 +21,10 @@ namespace PMT
         {
             _text.text = score.ToString();
         }
+
+        private void OnDestroy()
+        {
+            ScoreCounter.ScoreChanged -= OnScoreChanged;
+        }
     }
 }

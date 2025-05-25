@@ -1,1 +1,7 @@
-﻿internal interface IService { }
+﻿namespace PMT
+{
+    internal interface IService
+    {
+        void Dispose();
+    }
+}

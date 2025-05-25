@@ -8,6 +8,8 @@ namespace PMT
 
         public abstract void ApplyInField(Gem gem);
 
-        public abstract void ApplyInBar(ActionBarController actionBarController, GemType[] slots);
+        public abstract void ApplyInBar(GemType[] slots);
+
+        public abstract void OnDestroy();
     }
 }

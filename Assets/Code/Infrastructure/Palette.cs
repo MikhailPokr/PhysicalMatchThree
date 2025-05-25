@@ -16,5 +16,6 @@ namespace PMT
             public Shape Shape;
             public Gem Gem;
         }
+        public void Dispose() { }
     }
 }

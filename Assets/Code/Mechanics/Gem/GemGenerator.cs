@@ -10,43 +10,59 @@ namespace PMT
         [SerializeField] private GameObject _board;
         [SerializeField] private BoxCollider2D _collider;
         [SerializeField] private float _time;
-        [SerializeField] private int _slotsCount = 5; 
+        [SerializeField] private int _spawnerCount;
+        [SerializeField] private float _sidePadding = 1f; 
 
-        private GemController _gemController;
-        private GemChainSystem _chainSystem;
+        private IGemController _gemController;
+        private IGemChainSystem _chainSystem;
         private Palette _palette;
-        private List<float> _slotPositions;
+        private List<float> _spawnerPositions;
         private float _generationY;
+        private Camera _mainCamera;
+
+        private Coroutine _coroutine;
 
         public void Initialize()
         {
-            _gemController = ServiceLocator.Resolve<GemController>();
-            _chainSystem = ServiceLocator.Resolve<GemChainSystem>();
+            _mainCamera = Camera.main;
+            _gemController = ServiceLocator.Resolve<IGemController>();
+            ServiceLocator.TryResolve(out _chainSystem);
             _palette = ServiceLocator.Resolve<Palette>();
 
+            UpdateColliderSize();
             CalculateSlotPositions();
             _gemController.NeedGenerate += OnNeedGenerate;
         }
 
+        private void UpdateColliderSize()
+        {
+            float cameraWidth = _mainCamera.aspect * _mainCamera.orthographicSize * 2;
+            float colliderWidth = cameraWidth - (_sidePadding * 2);
+
+            _collider.size = new Vector2(colliderWidth, _collider.size.y);
+            _collider.offset = Vector2.zero;
+        }
+
         private void CalculateSlotPositions()
         {
-            _slotPositions = new List<float>();
+            _spawnerPositions = new List<float>();
             Bounds bounds = _collider.bounds;
 
             _generationY = bounds.center.y;
 
-            float slotWidth = bounds.size.x / _slotsCount;
-            for (int i = 0; i < _slotsCount; i++)
+            float slotWidth = bounds.size.x / _spawnerCount;
+            for (int i = 0; i < _spawnerCount; i++)
             {
                 float xPos = bounds.min.x + (slotWidth * i) + (slotWidth / 2f);
-                _slotPositions.Add(xPos);
+                _spawnerPositions.Add(xPos);
             }
         }
 
         private void GenerateGem(Vector3 pos, GemType type)
         {
-            Gem gem = GameObject.Instantiate(_palette.GemPrefabs.Find(x => x.Shape == type.Shape).Gem, pos, Quaternion.identity, _board.transform);
-            gem.initialize(_chainSystem, type);
+            Gem gem = GameObject.Instantiate(
+                _palette.GemPrefabs.Find(x => x.Shape == type.Shape).Gem, pos, Quaternion.identity, _board.transform);
+            gem.initialize(type, _chainSystem);
         }
 
         private void OnNeedGenerate(GemType[] gems)
@@ -55,52 +71,69 @@ namespace PMT
             {
                 Destroy(child.gameObject);
             }
-            StartCoroutine(Generate(gems));
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
+            _coroutine = StartCoroutine(Generate(gems));
         }
 
         IEnumerator Generate(GemType[] gems)
         {
             List<GemType> gemList = gems.ToList();
-            List<int> availableSlots = Enumerable.Range(0, _slotPositions.Count).ToList();
+            List<int> availableSlots = Enumerable.Range(0, _spawnerPositions.Count).ToList();
+            List<int> lastUsedSlots = new();
+            int slotCooldown = availableSlots.Count / 2;
 
             for (int i = 0; i < gems.Length; i++)
             {
-                if (availableSlots.Count == 0)
-                {
-                    availableSlots = Enumerable.Range(0, _slotPositions.Count).ToList();
-                }
+                availableSlots.RemoveAll(x => lastUsedSlots.Contains(x));
 
-                // ¬ыбираем случайный слот из доступных
                 int randomSlotIndex = Random.Range(0, availableSlots.Count);
                 int slotIndex = availableSlots[randomSlotIndex];
-                availableSlots.RemoveAt(randomSlotIndex);
 
-                // ѕолучаем позицию слота
-                float xPos = _slotPositions[slotIndex];
+                availableSlots.AddRange(lastUsedSlots);
+                if (lastUsedSlots.Count > slotCooldown)
+                    lastUsedSlots.RemoveAt(0);
+                lastUsedSlots.Add(slotIndex);
+
+                float xPos = _spawnerPositions[slotIndex];
                 Vector2 spawnPosition = new Vector2(xPos, _generationY);
 
-                // ¬ыбираем случайный гем из доступных
                 GemType gem = gemList[Random.Range(0, gemList.Count)];
-
                 GenerateGem(spawnPosition, gem);
 
                 gemList.Remove(gem);
-
                 yield return new WaitForSeconds(_time / 1000f);
             }
+
+            _coroutine = null;
         }
 
-        // ћетод дл€ отображени€ позиций слотов в гизмосах
+        private void OnDestroy()
+        {
+            _gemController.NeedGenerate -= OnNeedGenerate;
+        }
+
         private void OnDrawGizmos()
         {
-            if (_collider == null) return;
+            if (_collider == null || Camera.main == null) return;
 
-            CalculateSlotPositions();
+            float cameraWidth = Camera.main.aspect * Camera.main.orthographicSize * 2;
+            float colliderWidth = cameraWidth - (_sidePadding * 2);
+            Vector2 newSize = new Vector2(colliderWidth, _collider.size.y);
+
+            Vector3 center = _collider.transform.position;
+            Bounds newBounds = new Bounds(center, newSize);
 
             Gizmos.color = Color.green;
-            foreach (float xPos in _slotPositions)
+            Gizmos.DrawWireCube(newBounds.center, newBounds.size);
+
+            float slotWidth = newSize.x / _spawnerCount;
+            Gizmos.color = Color.cyan;
+            for (int i = 0; i < _spawnerCount; i++)
             {
-                Vector3 position = new Vector3(xPos, _generationY, 0);
+                float xPos = newBounds.min.x + (slotWidth * i) + (slotWidth / 2f);
+                Vector3 position = new Vector3(xPos, center.y, 0);
+
                 Gizmos.DrawSphere(position, 0.2f);
                 Gizmos.DrawLine(position - Vector3.up * 0.3f, position + Vector3.up * 0.3f);
                 Gizmos.DrawLine(position - Vector3.right * 0.3f, position + Vector3.right * 0.3f);

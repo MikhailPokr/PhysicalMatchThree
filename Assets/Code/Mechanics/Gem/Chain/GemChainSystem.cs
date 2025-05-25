@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PMT
 {
-    internal class GemChainSystem : IService
+    internal class GemChainSystem : IGemChainSystem
     {
         private List<GemChain> _chains;
 
@@ -61,6 +61,8 @@ namespace PMT
 
             _chains.RemoveAll(chain => chain.IsEmpty);
         }
+
+        public void Dispose() { }
 
         private class GemChain
         {

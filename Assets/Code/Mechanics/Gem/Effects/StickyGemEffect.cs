@@ -11,7 +11,7 @@ namespace PMT
     {
         public override Color Color => new Color(0, 0.8f, 0);
 
-        public override void ApplyInBar(ActionBarController actionBarController, GemType[] slots) { }
+        public override void ApplyInBar(GemType[] slots) { }
 
         private Gem _gem;
 
@@ -25,6 +25,11 @@ namespace PMT
         {
             FixedJoint2D joint = other.gameObject.AddComponent<FixedJoint2D>();
             joint.connectedBody = _gem.gameObject.GetComponent<Rigidbody2D>();
+        }
+
+        public override void OnDestroy()
+        {
+            _gem.Match -= OnMatch;
         }
     }
 }

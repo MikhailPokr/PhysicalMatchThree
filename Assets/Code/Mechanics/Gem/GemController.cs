@@ -5,15 +5,25 @@ using UnityEngine;
 
 namespace PMT
 {
-    internal class GemController : IService
-    {        
+    internal class GemController : IGemController
+    {
         public event Action<GemType[]> NeedGenerate;
         public event Action FieldClear;
 
+        private List<Color> _colors;
+        private List<Shape> _shapes;
+        int _copiesCount;
+        float _effectChance;
+
         private int _count;
-       
-        public GemController()
+
+        public GemController(List<Color> colors, List<Shape> shapes, int copiesCount, float effectChance)
         {
+            _colors = colors;
+            _shapes = shapes;
+            _copiesCount = copiesCount;
+            _effectChance = effectChance;
+
             EventBus<GemClickEvent>.Subscribe(OnClick);
         }
 
@@ -26,38 +36,33 @@ namespace PMT
 
         private GemType[] GetGemList(int count)
         {
-            List<Color> colors = new List<Color>() { Color.red, Color.blue, Color.green, Color.yellow, Color.cyan, Color.magenta, Color.gray };
-            List<Shape> shapes = Enum.GetValues(typeof(Shape)).Cast<Shape>().ToList();
-
-            if (count > shapes.Count * colors.Count * 3)
+            if (count > _colors.Count * _shapes.Count * _copiesCount)
                 throw new Exception("Много");
 
-            List<GemType> list = new List<GemType>();
+            List<GemType> list = new();
 
-            int fullCombinations = count / 3;
-            int remaining = count % 3;
-
-            for (int i = 0; i < fullCombinations; i++)
+            List<(Shape shape, Color color)> allCombinations = new();
+            foreach (Shape shape in _shapes)
             {
-                int colorIndex = i / shapes.Count;
-                int shapeIndex = i % shapes.Count;
-
-                for (int j = 0; j < 3; j++)
+                foreach (Color color in _colors)
                 {
-                    if (list.Count >= count) break;
-                    list.Add(new GemType(shapes[shapeIndex], colors[colorIndex], GetEffect()));
+                    allCombinations.Add((shape, color));
                 }
             }
 
-            if (remaining > 0 && fullCombinations < shapes.Count * colors.Count)
-            {
-                int colorIndex = fullCombinations / shapes.Count;
-                int shapeIndex = fullCombinations % shapes.Count;
+            List<(Shape shape, Color color)> shuffledCombinations = allCombinations.OrderBy(x => UnityEngine.Random.value).ToList();
 
-                for (int j = 0; j < remaining; j++)
+            int neededCombinations = (int)Math.Ceiling((double)count / _copiesCount);
+            List<(Shape shape, Color color)> selectedCombinations = shuffledCombinations.Take(neededCombinations).ToList();
+
+            foreach ((Shape shape, Color color) in selectedCombinations)
+            {
+                int copiesToAdd = Math.Min(_copiesCount, count - list.Count);
+                for (int j = 0; j < copiesToAdd; j++)
                 {
-                    list.Add(new GemType(shapes[shapeIndex], colors[colorIndex], GetEffect()));
+                    list.Add(new GemType(shape, color, GetEffect()));
                 }
+                if (list.Count >= count) break;
             }
 
             return list.ToArray();
@@ -66,13 +71,13 @@ namespace PMT
         private BaseGemSpecialEffect GetEffect()
         {
             float value = UnityEngine.Random.value;
-            if (value < 0.01)
+            if (value < _effectChance)
                 return new HeavyGemEffect();
-            if (value < 0.02)
+            if (value < _effectChance * 2)
                 return new StickyGemEffect();
-            if (value < 0.03)
+            if (value < _effectChance * 3)
                 return new FrozenGemEffect();
-            if (value < 0.04)
+            if (value < _effectChance * 4)
                 return new BombGemEffect();
             return null;
         }
@@ -86,6 +91,12 @@ namespace PMT
             {
                 FieldClear?.Invoke();
             }
+
+        }
+
+        public void Dispose()
+        {
+            EventBus<GemClickEvent>.Unsubscribe(OnClick);
         }
     }
 }

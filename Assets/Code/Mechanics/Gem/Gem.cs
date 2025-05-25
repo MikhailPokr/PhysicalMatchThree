@@ -9,7 +9,7 @@ namespace PMT
         [SerializeField] private GemView _view;
         public GemView View => _view;
 
-        private GemChainSystem _gemChainController;
+        private IGemChainSystem _gemChainController;
         private GemType _gemType; 
         public GemType GemType => _gemType;
 
@@ -19,12 +19,13 @@ namespace PMT
         public event Action<Gem> Match;
         public event Action<Gem> Dismatch;
 
-
-        public void initialize(GemChainSystem gemChainController, GemType type)
+        public void initialize(GemType type, IGemChainSystem gemChainController = null)
         {
             _gemChainController = gemChainController;
             _gemType = type;
             _view.Body.color = type.Color;
+
+            EventBus<GameOverEvent>.Subscribe(OnGameOver);
 
             if (type.Effect ==  null)
             {
@@ -34,6 +35,10 @@ namespace PMT
             _view.Outline.color = type.Effect.Color;
             _gemType.Effect.ApplyInField(this);
         }
+        private void OnGameOver(GameOverEvent gameOverEvent)
+        {
+            _clickLock = true;
+        }
 
         public Sprite GetSprite() => _view.Body.sprite;
 
@@ -42,7 +47,7 @@ namespace PMT
             Gem other = collision.gameObject.GetComponent<Gem>();
             if (other != null && other._gemType.ItsSameType(_gemType))
             {
-                _gemChainController.Match(this, other);
+                _gemChainController?.Match(this, other);
             }
             if (other != null)
             {
@@ -55,7 +60,7 @@ namespace PMT
             Gem other = collision.gameObject.GetComponent<Gem>();
             if (other != null && other._gemType.ItsSameType(_gemType))
             {
-                _gemChainController.Dismatch(this, other);
+                _gemChainController?.Dismatch(this, other);
             }
             if (other != null)
             {
@@ -68,6 +73,12 @@ namespace PMT
             if (_clickLock)
                 return;
             EventBus<GemClickEvent>.Publish(new GemClickEvent(this));
+        }
+
+        private void OnDestroy()
+        {
+            EventBus<GameOverEvent>.Unsubscribe(OnGameOver);
+            _gemType.Effect?.OnDestroy();
         }
 
         [Serializable]

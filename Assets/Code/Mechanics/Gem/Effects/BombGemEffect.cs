@@ -8,17 +8,16 @@ namespace PMT
     {
         public override Color Color => new Color(0.8f, 0, 0);
 
-        private ActionBarController _actionBarController;
+        private IActionBarController _actionBarController;
         private GemType[] _victims;
-        private bool _isProcessing; // Флаг для предотвращения рекурсии
+        private bool _isProcessing; 
 
-        public override void ApplyInBar(ActionBarController actionBarController, GemType[] slots)
+        public override void ApplyInBar(GemType[] slots)
         {
             _victims = new GemType[2];
-            _actionBarController = actionBarController;
+            _actionBarController = ServiceLocator.Resolve<IActionBarController>();
             _actionBarController.ActionBarChanged += OnActionBarChanged;
 
-            // Первоначальное сохранение соседей
             UpdateVictims(slots);
         }
 
@@ -38,22 +37,20 @@ namespace PMT
                     return;
                 }
             }
-            // Если бомба исчезла, очищаем жертв
+
             _victims[0] = null;
             _victims[1] = null;
         }
 
         private void OnActionBarChanged(GemType[] slots)
         {
-            if (_isProcessing) return; // Защита от рекурсии
+            if (_isProcessing) return;
             _isProcessing = true;
 
-            // Проверяем, есть ли ещё бомба в слотах
             bool bombExists = slots.Any(gem => gem != null && gem.Effect == this);
 
             if (!bombExists && (_victims[0] != null || _victims[1] != null))
             {
-                // Если бомбы нет, но есть жертвы — удаляем их
                 for (int i = 0; i < _victims.Length; i++)
                 {
                     if (_victims[i] != null && slots.Contains(_victims[i]))
@@ -65,16 +62,21 @@ namespace PMT
                 _victims[0] = null;
                 _victims[1] = null;
 
-                // Уведомляем об изменениях
                 _actionBarController.ChangeActionBar(slots);
             }
             else
             {
-                // Обновляем список жертв, если бомба ещё есть
                 UpdateVictims(slots);
             }
 
             _isProcessing = false;
+        }
+
+        public override void OnDestroy()
+        {
+            if (_actionBarController == null)
+                return;
+            _actionBarController.ActionBarChanged -= OnActionBarChanged;
         }
 
         public override void ApplyInField(Gem gem) { }

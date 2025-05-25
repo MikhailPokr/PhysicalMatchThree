@@ -7,11 +7,13 @@ namespace PMT
     {
         public override Color Color => Color.gray;
 
-        public override void ApplyInBar(ActionBarController actionBarController, GemType[] slots) { }
+        public override void ApplyInBar(GemType[] slots) { }
 
         public override void ApplyInField(Gem gem)
         {
             gem.GetComponent<Rigidbody2D>().mass = 30;
         }
+
+        public override void OnDestroy() { }
     }
 }
