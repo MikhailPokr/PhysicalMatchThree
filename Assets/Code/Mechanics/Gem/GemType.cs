@@ -19,15 +19,34 @@ namespace PMT
             _effect = effect;
         }
 
-        public bool ItsSameType(GemType other)
+        private bool ItsSameType(GemType other)
         {
-            if (other == null) return false;
+            if (other == null) 
+                return false;
             if (
                 _shape == other._shape &&
                 _color == other._color)
-            return true;
+            {
+                return true;
+            }
             return false;
         }
 
+        public static bool operator ==(GemType gem1, GemType gem2)
+        {
+            if (ReferenceEquals(gem1, gem2))
+                return true;
+            if (gem1 is null || gem2 is null)
+                return false;
+            return gem1.ItsSameType(gem2) || gem2.ItsSameType(gem1);
+        }
+        public static bool operator !=(GemType gem1, GemType gem2) => !(gem1 == gem2);
+
+        public override bool Equals(object obj) => this == (obj as GemType);
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_shape, Shape, _color, Color, _effect, Effect);
+        }
     }
 }

@@ -20,8 +20,8 @@ internal class StandartGame : BaseGame
 
         _gemController = ServiceLocator.Register<IGemController>(
             new GemController(
-                new List<Color> { Color.red, Color.blue, Color.green, Color.cyan, Color.yellow, Color.magenta},
-                new List<Shape> { Shape.Circle, Shape.Square, Shape.Heart, Shape.Triangle, Shape.Star, Shape.Rhomb},
+                new List<Color> { new(0.87f, 0.98f, 0.43f), new(0.98f, 0.43f, 0.47f), new(0.43f, 0.45f, 0.98f), new(0.43f, 0.98f, 0.52f), new(0.98f, 0.43f, 0.96f), new(0.43f, 0.92f, 0.98f) },
+                new List<Shape> { Shape.Circle, Shape.Square, Shape.Heart, Shape.Triangle, Shape.Pentagon, Shape.Rhomb},
                 matchRule,
                 effectChance
                 ));

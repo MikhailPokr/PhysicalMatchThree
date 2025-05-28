@@ -4,7 +4,7 @@ namespace PMT
 {
     internal abstract class BaseGemSpecialEffect
     {
-        public abstract Color Color { get; }
+        public abstract RuneType Rune { get; }
 
         public abstract void ApplyInField(Gem gem);
 

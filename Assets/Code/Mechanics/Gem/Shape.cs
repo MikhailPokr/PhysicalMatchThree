@@ -7,7 +7,7 @@ namespace PMT
     {
         Circle,
         Triangle,
-        Star,
+        Pentagon,
         Heart,
         Rhomb,
         Square

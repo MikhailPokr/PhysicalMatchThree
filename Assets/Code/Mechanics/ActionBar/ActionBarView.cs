@@ -29,10 +29,6 @@ namespace PMT
                 {
                     _slotImages[i].sprite = _palette.GemPrefabs.Find(x => x.Shape == slots[i].Shape).Gem.GetSprite();
                     _slotImages[i].color = slots[i].Color;
-                    if (slots[i].Effect == null)
-                        _slotsBG[i].color = Color.black;
-                    else
-                        _slotsBG[i].color = slots[i].Effect.Color;
                 }
                 else
                 {

@@ -9,7 +9,7 @@ namespace PMT
 {
     internal class FrozenGemEffect : BaseGemSpecialEffect
     {
-        public override Color Color => new Color(0, 0, 0.8f);
+        public override RuneType Rune => RuneType.Isa;
 
         private int _unfrozenValue = 3;
         private int _lastValue;
@@ -42,7 +42,7 @@ namespace PMT
 
             if (_unfrozenValue == 0)
             {
-                _gem.View.Outline.color = Color.black;
+                _gem.View.Rune.color = Color.black;
                 _actionBarController.ActionBarChanged -= OnActionBarChanged;
                 _gem.SwitchLock();
             }

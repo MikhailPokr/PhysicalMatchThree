@@ -25,4 +25,13 @@ MonoBehaviour:
     Gem: {fileID: 6120691194758628361, guid: 19df33c4c33e1cc45992c4bab7783512, type: 3}
   - Shape: 5
     Gem: {fileID: 6120691194758628361, guid: 1275b612216bb994883841425ae60a60, type: 3}
+  RuneSprites:
+  - RuneType: 0
+    Sprite: {fileID: -1754236070, guid: 8c8be6b101e78f14997f0f5772b54cdf, type: 3}
+  - RuneType: 1
+    Sprite: {fileID: -1571901132, guid: 8c8be6b101e78f14997f0f5772b54cdf, type: 3}
+  - RuneType: 2
+    Sprite: {fileID: 581828381, guid: 8c8be6b101e78f14997f0f5772b54cdf, type: 3}
+  - RuneType: 3
+    Sprite: {fileID: 968544394, guid: 8c8be6b101e78f14997f0f5772b54cdf, type: 3}
   GameOverAlertPrefab: {fileID: 92956674933763174, guid: e4cd5b5a0b1af9f4cbb3e315bf361ce9, type: 3}

@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 5766392792792857797}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2799757, y: 1.000145, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.08000572, z: 0.08000572}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.20001431, z: 0.20001431}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8894951541488094732}
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4649630577764919968, guid: 3d84148a4f8f93e4a8c07b1b67038799, type: 3}
+  m_Sprite: {fileID: 1189243752, guid: 8c8be6b101e78f14997f0f5772b54cdf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _view:
     Body: {fileID: 4965310098119734070}
-    Outline: {fileID: 3753716850272510233}
+    Rune: {fileID: 3753716850272510233}
 --- !u!50 &9044628685066136283
 Rigidbody2D:
   serializedVersion: 5
@@ -171,7 +171,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.56, y: 6.9600005}
+    oldSize: {x: 1.74, y: 3.2}
     newSize: {x: 7.05, y: 6.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -179,10 +179,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.73, y: -0.060000006}
-      - {x: 0.010000001, y: 3.41}
-      - {x: -2.69, y: -0.07}
-      - {x: -0.020000001, y: -3.44}
+    - - {x: 0.87, y: 0}
+      - {x: -0.01, y: 1.5999999}
+      - {x: -0.87, y: -0.03}
+      - {x: 0, y: -1.5999999}
   m_UseDelaunayMesh: 0
 --- !u!1 &7082469576596569872
 GameObject:
@@ -211,7 +211,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1326, y: 1.1326, z: 1.1326}
+  m_LocalScale: {x: 1.2563, y: 1.2563, z: 1.2563}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6594172305057854338}
@@ -259,13 +259,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
-  m_Sprite: {fileID: -4649630577764919968, guid: 3d84148a4f8f93e4a8c07b1b67038799, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: -1754236070, guid: 8c8be6b101e78f14997f0f5772b54cdf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.56, y: 6.9600005}
+  m_Size: {x: 0.8, y: 0.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

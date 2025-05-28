@@ -6,7 +6,7 @@ namespace PMT
 {
     internal class BombGemEffect : BaseGemSpecialEffect
     {
-        public override Color Color => new Color(0.8f, 0, 0);
+        public override RuneType Rune => RuneType.Thuriasaz;
 
         private IActionBarController _actionBarController;
         private GemType[] _victims;

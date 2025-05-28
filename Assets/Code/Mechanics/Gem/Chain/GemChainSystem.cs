@@ -11,6 +11,16 @@ namespace PMT
         public GemChainSystem()
         {
             _chains = new List<GemChain>();
+
+            EventBus<MatchEvent>.Subscribe(OnMatchEvent);
+        }
+
+        public void OnMatchEvent(MatchEvent matchEvent)
+        {
+            if (matchEvent.Match)
+                Match(matchEvent.Sender, matchEvent.Other);
+            else
+                Match(matchEvent.Sender, matchEvent.Other);
         }
 
         public void Match(Gem gem, Gem connection)

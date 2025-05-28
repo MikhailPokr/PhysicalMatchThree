@@ -62,7 +62,8 @@ namespace PMT
         {
             Gem gem = GameObject.Instantiate(
                 _palette.GemPrefabs.Find(x => x.Shape == type.Shape).Gem, pos, Quaternion.identity, _board.transform);
-            gem.initialize(type, _chainSystem);
+            Palette.RuneSprite rune = _palette.RuneSprites.FirstOrDefault(x => x.RuneType == type.Effect?.Rune);
+            gem.initialize(type, rune?.Sprite);
         }
 
         private void OnNeedGenerate(GemType[] gems)

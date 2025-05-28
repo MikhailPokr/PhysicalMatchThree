@@ -9,5 +9,6 @@ namespace PMT
         public static void Publish(T eventData) => OnEvent?.Invoke(eventData);
         public static void Subscribe(Action<T> handler) => OnEvent += handler;
         public static void Unsubscribe(Action<T> handler) => OnEvent -= handler;
+
     }
 }

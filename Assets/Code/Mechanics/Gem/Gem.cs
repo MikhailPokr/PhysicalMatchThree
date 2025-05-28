@@ -19,9 +19,9 @@ namespace PMT
         public event Action<Gem> Match;
         public event Action<Gem> Dismatch;
 
-        public void initialize(GemType type, IGemChainSystem gemChainController = null)
+        public void initialize(GemType type, Sprite runeSprite)
         {
-            _gemChainController = gemChainController;
+            ServiceLocator.TryResolve<IGemChainSystem>(out _gemChainController);
             _gemType = type;
             _view.Body.color = type.Color;
 
@@ -29,10 +29,11 @@ namespace PMT
 
             if (type.Effect ==  null)
             {
-                _view.Outline.color = Color.black;
+                _view.Rune.color = new Color(0, 0, 0, 0);
                 return;
             }
-            _view.Outline.color = type.Effect.Color;
+            _view.Rune.color = type.Color;
+            _view.Rune.sprite = runeSprite;
             _gemType.Effect.ApplyInField(this);
         }
         private void OnGameOver(GameOverEvent gameOverEvent)
@@ -45,27 +46,17 @@ namespace PMT
         private void OnCollisionEnter2D(Collision2D collision)
         {
             Gem other = collision.gameObject.GetComponent<Gem>();
-            if (other != null && other._gemType.ItsSameType(_gemType))
-            {
-                _gemChainController?.Match(this, other);
-            }
-            if (other != null)
-            {
-                Match?.Invoke(other);
-            }
+            if (other == null)
+                return;
+            EventBus<MatchEvent>.Publish(new MatchEvent(true, this, other));
         }
 
         private void OnCollisionExit2D(Collision2D collision)
         {
             Gem other = collision.gameObject.GetComponent<Gem>();
-            if (other != null && other._gemType.ItsSameType(_gemType))
-            {
-                _gemChainController?.Dismatch(this, other);
-            }
-            if (other != null)
-            {
-                Dismatch?.Invoke(other);
-            }
+            if (other == null)
+                return;
+            EventBus<MatchEvent>.Publish(new MatchEvent(true, this, other));
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -78,14 +69,14 @@ namespace PMT
         private void OnDestroy()
         {
             EventBus<GameOverEvent>.Unsubscribe(OnGameOver);
-            _gemType.Effect?.OnDestroy();
+            _gemType?.Effect?.OnDestroy();
         }
 
         [Serializable]
         public class GemView
         {
             public SpriteRenderer Body;
-            public SpriteRenderer Outline;
+            public SpriteRenderer Rune;
         }
     }
 }

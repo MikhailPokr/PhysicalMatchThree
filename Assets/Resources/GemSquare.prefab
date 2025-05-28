@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0884, y: 1.0884, z: 1.0884}
+  m_LocalScale: {x: 1.3447, y: 1.3447, z: 1.3447}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6594172305057854338}
@@ -75,13 +75,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
-  m_Sprite: {fileID: 3483014168815553788, guid: 3d84148a4f8f93e4a8c07b1b67038799, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: -1754236070, guid: 8c8be6b101e78f14997f0f5772b54cdf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.24, y: 6.24}
+  m_Size: {x: 0.8, y: 0.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -116,8 +116,8 @@ Transform:
   m_GameObject: {fileID: 5766392792792857797}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2799757, y: 1.000145, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.08000572, z: 0.08000572}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3318585981526672906}
@@ -167,7 +167,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3483014168815553788, guid: 3d84148a4f8f93e4a8c07b1b67038799, type: 3}
+  m_Sprite: {fileID: 1845272999, guid: 8c8be6b101e78f14997f0f5772b54cdf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _view:
     Body: {fileID: 4965310098119734070}
-    Outline: {fileID: 7869477578743908268}
+    Rune: {fileID: 7869477578743908268}
 --- !u!50 &9044628685066136283
 Rigidbody2D:
   serializedVersion: 5
@@ -258,11 +258,11 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.24, y: 6.24}
+    oldSize: {x: 2.38, y: 2.41}
     newSize: {x: 7.05, y: 6.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 6.24, y: 6.24}
+  m_Size: {x: 2.38, y: 2.41}
   m_EdgeRadius: 0

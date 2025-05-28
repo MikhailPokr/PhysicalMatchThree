@@ -30,7 +30,7 @@ namespace PMT
 
                 for (int j = i + 1; j < slots.Length; j++)
                 {
-                    if (slots[j] != null && slots[j].ItsSameType(currentType))
+                    if (slots[j] != null && slots[j] == currentType)
                         foundCount++;
                 }
 
@@ -41,7 +41,7 @@ namespace PMT
 
                     foreach (GemType gem in slots)
                     {
-                        if (gem == null || !gem.ItsSameType(currentType))
+                        if (gem == null || gem != currentType)
                         {
                             newSlots[newIndex] = gem;
                             newIndex++;

@@ -5,7 +5,7 @@ namespace PMT
 {
     internal class HeavyGemEffect : BaseGemSpecialEffect
     {
-        public override Color Color => Color.gray;
+        public override RuneType Rune => RuneType.Hagalaz;
 
         public override void ApplyInBar(GemType[] slots) { }
 

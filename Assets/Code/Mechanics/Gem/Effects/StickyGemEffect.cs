@@ -9,7 +9,7 @@ namespace PMT
 {
     internal class StickyGemEffect : BaseGemSpecialEffect
     {
-        public override Color Color => new Color(0, 0.8f, 0);
+        public override RuneType Rune => RuneType.Ingwaz;
 
         public override void ApplyInBar(GemType[] slots) { }
 

@@ -8,7 +8,9 @@ namespace PMT
     internal class Palette : ScriptableObject, IService
     {
         public List<GemPrefabData> GemPrefabs;
+        public List<RuneSprite> RuneSprites;
         public GameOverAlert GameOverAlertPrefab;
+        public void Dispose() { }
 
         [Serializable]
         public class GemPrefabData
@@ -16,6 +18,12 @@ namespace PMT
             public Shape Shape;
             public Gem Gem;
         }
-        public void Dispose() { }
+
+        [Serializable]
+        public class RuneSprite
+        {
+            public RuneType RuneType;
+            public Sprite Sprite;
+        }
     }
 }
