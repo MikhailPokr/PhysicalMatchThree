@@ -60,7 +60,7 @@ namespace PMT
                 int copiesToAdd = Math.Min(_copiesCount, count - list.Count);
                 for (int j = 0; j < copiesToAdd; j++)
                 {
-                    list.Add(new GemType(shape, color, GetEffect()));
+                    list.Add(new GemType(shape, color, GetEffect(UnityEngine.Random.value)));
                 }
                 if (list.Count >= count) break;
             }
@@ -68,16 +68,15 @@ namespace PMT
             return list.ToArray();
         }
 
-        private BaseGemSpecialEffect GetEffect()
+        private BaseGemSpecialEffect GetEffect(float rValue)
         {
-            float value = UnityEngine.Random.value;
-            if (value < _effectChance)
+            if (rValue < _effectChance)
                 return new HeavyGemEffect();
-            if (value < _effectChance * 2)
+            if (rValue < _effectChance * 2)
                 return new StickyGemEffect();
-            if (value < _effectChance * 3)
+            if (rValue < _effectChance * 3)
                 return new FrozenGemEffect();
-            if (value < _effectChance * 4)
+            if (rValue < _effectChance * 4)
                 return new BombGemEffect();
             return null;
         }

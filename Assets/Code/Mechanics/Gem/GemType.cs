@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace PMT
 {
@@ -42,11 +43,19 @@ namespace PMT
         }
         public static bool operator !=(GemType gem1, GemType gem2) => !(gem1 == gem2);
 
-        public override bool Equals(object obj) => this == (obj as GemType);
+
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_shape, Shape, _color, Color, _effect, Effect);
+            return HashCode.Combine(_shape, _color, _effect);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is GemType type &&
+                   _shape == type._shape &&
+                   _color.Equals(type._color) &&
+                   EqualityComparer<BaseGemSpecialEffect>.Default.Equals(_effect, type._effect);
         }
     }
 }
